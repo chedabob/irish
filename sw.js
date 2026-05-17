@@ -1,16 +1,17 @@
 const CACHE = 'gaeilge-v1';
+const BASE = self.registration.scope;
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/styles/main.css',
-  '/src/app.js',
-  '/src/curriculum.js',
-  '/src/store.js',
-  '/src/audio.js',
-  '/icons/icon.svg',
-  '/icons/icon-192.svg',
-  '/icons/icon-512.svg',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.json',
+  BASE + 'styles/main.css',
+  BASE + 'src/app.js',
+  BASE + 'src/curriculum.js',
+  BASE + 'src/store.js',
+  BASE + 'src/audio.js',
+  BASE + 'icons/icon.svg',
+  BASE + 'icons/icon-192.svg',
+  BASE + 'icons/icon-512.svg',
 ];
 
 self.addEventListener('install', e => {
