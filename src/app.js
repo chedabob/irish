@@ -370,10 +370,10 @@ const engine = {
     const speakBtn = card.querySelector('#speakBtn');
     speakBtn.addEventListener('click', () => {
       speakBtn.classList.add('playing');
-      speak(step.irish, true).then(() => speakBtn.classList.remove('playing'));
+      speak(step.irish, step.tts).then(() => speakBtn.classList.remove('playing'));
     });
     // auto-play
-    setTimeout(() => speak(step.irish, true), 300);
+    setTimeout(() => speak(step.irish, step.tts), 300);
 
     const footer = document.getElementById('lessonFooter');
     const btn = el('button', 'cta-btn primary', 'Got it — next!');
@@ -490,12 +490,11 @@ const engine = {
     const playBtn = card.querySelector('#listenPlay');
     playBtn.addEventListener('click', () => {
       playBtn.classList.add('playing');
-      speak(step.irish, true).then(() => {
+      speak(step.irish, step.tts).then(() => {
         playBtn.classList.remove('playing');
         if (!hasPlayed) {
           hasPlayed = true;
           card.querySelector('.listen-hint').textContent = 'Tap again to replay';
-          // Show the question now
           showQuestion();
         }
       });
@@ -504,7 +503,7 @@ const engine = {
     // auto-play and show question
     setTimeout(() => {
       playBtn.classList.add('playing');
-      speak(step.irish, true).then(() => {
+      speak(step.irish, step.tts).then(() => {
         playBtn.classList.remove('playing');
         hasPlayed = true;
         card.querySelector('.listen-hint').textContent = 'Tap to replay';

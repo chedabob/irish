@@ -7,6 +7,7 @@ function findVoices() {
   irishVoice = voices.find(v => v.lang === 'ga-IE' || v.lang === 'ga') ?? null;
   fallbackVoice =
     voices.find(v => v.lang.startsWith('en-IE')) ??
+    voices.find(v => v.lang.startsWith('en-GB')) ??
     voices.find(v => v.lang.startsWith('en')) ??
     null;
   ready = voices.length > 0;
@@ -25,16 +26,23 @@ export function hasIrishVoice() {
   return !!irishVoice;
 }
 
-export function speak(text, useIrish = true) {
+// irish: the actual Irish text
+// tts:   phonetic English approximation — used when no Irish voice available
+export function speak(irish, tts) {
   if (typeof speechSynthesis === 'undefined') return Promise.resolve();
   speechSynthesis.cancel();
 
+  // If we have a real Irish voice, use the Irish text — it knows how to pronounce it.
+  // Otherwise use the phonetic approximation so an English voice sounds passable.
+  const useIrishVoice = !!irishVoice;
+  const text = useIrishVoice ? irish : (tts ?? irish);
+  const voice = useIrishVoice ? irishVoice : fallbackVoice;
+
   return new Promise(resolve => {
     const utt = new SpeechSynthesisUtterance(text);
-    const voice = useIrish ? (irishVoice ?? fallbackVoice) : fallbackVoice;
     if (voice) utt.voice = voice;
-    utt.lang = useIrish && irishVoice ? 'ga-IE' : 'en-IE';
-    utt.rate = 0.85;
+    utt.lang = useIrishVoice ? 'ga-IE' : (fallbackVoice?.lang ?? 'en-IE');
+    utt.rate = 0.82;
     utt.pitch = 1.0;
     utt.onend = resolve;
     utt.onerror = resolve;
